@@ -1,1 +1,5 @@
 book
+tutorial/book
+!.gitkeep
+bin
+pkg

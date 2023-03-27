@@ -14,6 +14,7 @@
             mdbook
           ];
           shellHook = ''
+            cd tutorial/
             export PS1="\e[0;32m(golang)\$ \e[m" 
           '';
         };
