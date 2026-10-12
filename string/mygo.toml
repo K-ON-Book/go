@@ -1,0 +1,16 @@
+# mygo.toml — configuration for mygo build tool
+
+[project]
+name = "string"
+version = "0.1.0"
+
+[build]
+out-dir = "bin"
+
+[test]
+timeout = "30s"
+
+[profile.release]
+ldflags = "-s -w"
+[profile.release.env]
+CGO_ENABLED = "0"
