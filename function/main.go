@@ -106,7 +106,7 @@ func closure1(a int) func() int {
 		count++
 		a++
 		return count + a
-	} // return 后面的这个函数就是闭包, a count 就是外部变量
+	} // return 后面的这个函数就是[闭包],是特殊的[匿名函数], a count 就是外部变量
 }
 
 func f2() {
