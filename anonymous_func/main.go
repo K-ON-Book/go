@@ -27,12 +27,15 @@ func tempDir() []string {
 func t1() {
 	var rmdir []func()
 	for _, d := range tempDir() {
+		fmt.Println(&d) // go 1.21以前会是同一个地址，由于闭包记录的是循环变量的地址，d地址指向的值就会是最后一次循环的值，这会导致下面只能删除同一个目录. 1.21以后 for range，和普通的for后面的循环变量当真正需要内存地址的时候都会开辟新的内存，为了性能，当不明确需要这个地址的时候编译器会优化（https://github.com/golang/go/issues/60078 https://go.dev/blog/loopvar）。修改go.mod 的go版本可以验证
 		os.Mkdir(d, 0o755)
 		rmdir = append(rmdir, func() { os.RemoveAll(d) })
 	}
 
 	dirs := tempDir()
-	for i := 0; i < len(dirs); i++ {
+	// i := 0
+	for i := 0; i < len(dirs); i++ { // 如果这个i声明放到for的外面，那么1.21以后也还是会是打印同一处地址
+		fmt.Println(&i) // 和上面同理
 		os.Mkdir(dirs[i], 0o755)
 		rmdir = append(rmdir, func() {
 			os.RemoveAll(dirs[i])
