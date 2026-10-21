@@ -35,6 +35,23 @@ func (path Path) Distance() float64 {
 	return sum
 }
 
+type (
+	myt1 *int
+	myt2 interface{}
+	myt3 any
+)
+
+// receiver 的底层类型不能是指针或者interface
+// 宪法：https://go.dev/ref/spec#Method_declarations "Its type must be a defined type T....."
+// 不能是指针：
+// 不能是interface：interface是方法的集合，再给interface绑定方法就语义混乱
+// /compiler: invalid receiver type myt1 (pointer or interface type) [InvalidRecv]
+// func (m myt1) print() { fmt.Println() }
+//
+// func (m myt2) print() {}
+//
+// func (m myt3) print() {}
+
 func main() {
 	p := Point{1, 1}
 	q := Point{4, 5}
@@ -49,4 +66,13 @@ func main() {
 		{1, 1},
 	}
 	fmt.Println(perim.Distance()) // 虽然Point也是同名方法，但是因为前面的receiver不同所以不会命名冲突
+
+	var s1 mySlice = []int{1, 2, 3}
+	var s2 *mySlice
+	fmt.Println((&s1).sum()) // 功能上等价于写 s1.sum()，因为会自动加&,自动加的前提是s1是可寻址的
+	// mySlice{1,2,3}).sum()// 报错，字面量是临时值，无法寻址
+	(&mySlice{1, 2, 3}).sum()      // 修复后不报错， 主动加&，会拿到字面量的地址符合receiver类型，值得注意的是不加小括号的话，因为调用方法的优先级高于取地址，所以会报错
+	fmt.Printf("%p\n", &[1]int{1}) // 可以打印出来这个临时地址,复合字面量可以取地址，但是比如&1就不行. Doc: https://go.dev/ref/spec#Address_operators "As an exception to the addressability requirement, x may also be a (possibly parenthesized) composite literal..."
+	// 反思：为什么go不也自动对字面量加取地址符？TODO:
+	fmt.Println(s2.sum()) // s2 零值是nil，nil也能调用方法，但是一定要注意方法需要对receiver值是nil的情况处理
 }
