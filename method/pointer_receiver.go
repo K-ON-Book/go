@@ -19,7 +19,7 @@ func (m *myPoint) Distance(dot myPoint) float64 {
 
 type mySlice []int
 
-// receiver值是nil也能调用方法，但是一定要对值是nil的情况处理
+// receiver值是nil也能调用方法，但是最好要对值是nil的情况处理
 func (m *mySlice) sum() (sum int) {
 	if m == nil {
 		return 0

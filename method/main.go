@@ -74,5 +74,5 @@ func main() {
 	(&mySlice{1, 2, 3}).sum()      // 修复后不报错， 主动加&，会拿到字面量的地址符合receiver类型，值得注意的是不加小括号的话，因为调用方法的优先级高于取地址，所以会报错
 	fmt.Printf("%p\n", &[1]int{1}) // 可以打印出来这个临时地址,复合字面量可以取地址，但是比如&1就不行. Doc: https://go.dev/ref/spec#Address_operators "As an exception to the addressability requirement, x may also be a (possibly parenthesized) composite literal..."
 	// 反思：为什么go不也自动对字面量加取地址符？TODO:
-	fmt.Println(s2.sum()) // s2 零值是nil，nil也能调用方法，但是一定要注意方法需要对receiver值是nil的情况处理
+	fmt.Println(s2.sum()) // s2 零值是nil，nil也能调用方法，但是一定要注意方法最好要对receiver值是nil的情况处理
 }

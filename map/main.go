@@ -30,6 +30,7 @@ func main() {
 	}
 
 	clear(ages)
+	fmt.Println("after clear,len(ages): ", len(ages)) //0
 	ages["carol"] = 21
 	fmt.Println(ages) // 都clear了，按理来说不能增加元素carol的，会panic，难道clear不会让[ages]变成nil？不会变成nil，底层数据结构还是完整保留，只是清理完成后变成空的map; 如何通过key找到value的？nvim $(go env GOROOT)/src/internal/runtime/maps/runtime.go:runtime_mapaccess1 读懂这个函数的实现
 
